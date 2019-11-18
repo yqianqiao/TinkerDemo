@@ -1,0 +1,41 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="normal_padding">5dp</dimen>
+    <!--控件之间的边距-->
+    <dimen name="left_right_margin">20dp</dimen>
+    <dimen name="edittext_margin_top">30dp</dimen>
+
+    <dimen name="viewgroup_left_right_margin">15dp</dimen>
+
+
+    <!--分隔线margin-->
+    <dimen name="margin_normal_break_line">10dp</dimen>
+
+
+
+
+    <!--常用的Padding-->
+    <dimen name="mine_padding_normal">10dp</dimen>
+    <dimen name="normal_padding_top">30dp</dimen>
+
+
+
+
+    <!--首页activity-->
+                <!--首页tab字体的大小-->
+                <dimen name="home10px">9sp</dimen>
+
+    <!--公用title-->
+                 <dimen name="more_function16px">16sp</dimen>
+                <dimen name="titlebar_title18px">18sp</dimen>
+
+    <!--我的模块-->
+            <!--我的服务列表字体的大小-->
+            <dimen name="mine_my_service14px">14sp</dimen>
+             <!--个人中心高度-->
+             <dimen name="mine_item_layout_height">40dp</dimen>
+
+</resources>

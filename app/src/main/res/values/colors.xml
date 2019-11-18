@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!--字体颜色-->
+        <color name="commom_text_color_white">#ffffff</color>
+
+
+    <!--首页activity-->
+
+                        <!--首页tab块背景颜色-->
+                                     <color name="ll_buttom_tabs">#ffffff</color>
+
+                        <!--首页tab字体颜色-->
+                                    <color name="home_tab_text">#BEBEBE</color>
+                                    <color name="home_tab_text_select">#FEA509</color>
+
+
+                      <!--首页fragment > search字体颜色-->
+                                     <color name="fragment_search_text">#BEBEBE</color>
+
+
+                        <!--首页fragment > tablayout_news_state字体颜色-->
+                                    <color name="fragment_tablayout_news_select">#FEA509</color>
+                                     <color name="fragment_tablayout_news">#7B7B7B</color>
+
+                        <!--首页fragment > tablayout_type_state字体颜色F94437-->
+                                        <color name="fragment_tablayout_type_select">#F83D30</color>
+                                        <color name="fragment_tablayout_type">#7B7B7B</color>
+
+
+
+
+    <!--我的*背景颜色-->
+          <color name="mine_bg">#FAFAFA</color>
+       <!--我的*网名字体颜色-->
+             <color name="mine_user_name">#5e5e5e</color>
+        <!--我的*账号字体颜色-->
+                <color name="mine_user_id">#7b7b7b</color>
+        <!--我的*我的服务字体颜色-->
+                 <color name="mine_my_service">#222222</color>
+          <!--我的*修改头像dialog字体颜色-->
+                 <color name="update_dialog">#3478F7</color>
+            <!--我的*修改昵称字体颜色-->
+                <color name="update_name">#B5B5B5</color>
+            <!--我的*按钮背景颜色-->
+                <color name="mine_button_bg">#FEA509</color>
+                <!--第三方登录*线条颜色-->
+                     <color name="third_party_line">#E4E4E4</color>
+
+
+
+    <!--详情深黑字体颜色-->
+    <color name="game_detail_s">#3E3E3E</color>
+
+
+    <!--咨询详情底部背景颜色-->
+    <color name="news_info_bottom_bg">#393939</color>
+    //
+
+    <color name="finder_mask">#60000000</color>
+    <color name="rea">#ffff0000</color>
+
+</resources>

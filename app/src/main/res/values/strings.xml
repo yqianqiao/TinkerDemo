@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">搜游记</string>
+    <string name="db_yd">云巅</string>
+    <string name="db_ssss">三生三世</string>
+    <string name="db_qgwjd">清宫无间斗</string>
+    <string name="db_sghj">时光幻境</string>
+    <string name="db_rxgl">热血归来</string>
+    <string name="db_qseb">七十二变</string>
+    <string name="db_xkx">侠客行</string>
+    <string name="db_cqz">楚乔传</string>
+    <string name="db_lhxc">烈火星辰</string>
+    <string name="db_cqll">传奇来了</string>
+    <string name="db_xytx">西游突袭</string>
+    <string name="db_fyl">风云录</string>
+    <string name="db_jl">九黎</string>
+    <string name="db_frfxz">凡人飞仙传</string>
+    <string name="db_bldzz">Sooyooj.com</string>
+
+
+    <!--网络连接的提示-->
+    <string name="netword_conect">请检查您当前的网络环境！</string>
+
+    <!--搜索框提示文字-->
+    <string name="public_search">请输入需要搜索的信息</string>
+
+    <string name="auth_cancel">授权操作已取消</string>
+    <string name="auth_error">授权操作遇到错误，请阅读Logcat输出</string>
+</resources>
