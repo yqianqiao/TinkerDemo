@@ -2,93 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.huimee.dabaoapp">
-    <!--   &lt;!&ndash; 添加快捷方式 &ndash;&gt;
-       <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-       &lt;!&ndash; 移除快捷方式 &ndash;&gt;
-       <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
-       &lt;!&ndash; 查询快捷方式 &ndash;&gt;
-       <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />-->
-
-    <!-- 添加快捷方式 -->
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher2.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher3.permission.INSTALL_SHORTCUT" />
-    <!-- 移除快捷方式 -->
-    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher2.permission.UNINSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher3.permission.UNINSTALL_SHORTCUT" />
-    <!-- 查询快捷方式 -->
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.android.launcher2.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.android.launcher3.permission.READ_SETTINGS" />
-
-    <!-- 其他快捷方式权限 -->
-    <uses-permission android:name="org.adw.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.qihoo360.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.lge.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="net.qihoo.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="org.adwfreak.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="org.adw.launcher_donut.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.huawei.launcher3.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.fede.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.sec.android.app.twlauncher.settings.READ_SETTINGS" />
-    <uses-permission android:name="com.anddoes.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.tencent.qqlauncher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.huawei.launcher2.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.android.mylauncher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.ebproductions.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.lenovo.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
-
-
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-
-    <!--百度地图-->
-    <!-- 这个权限用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 这个权限用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- 用于读取手机当前的状态-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 访问网络，网络定位需要上网-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- SD卡读取权限，用户写入离线定位数据-->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-
-    <!-- Required  一些系统要求的权限，如访问网络等-->
-    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!-- 开启闪光灯权限 -->
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:name=".app.MyApplication"
@@ -105,9 +18,7 @@
 
         <activity
             android:name=".PlayGameActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".DaBaoActivity"
             android:screenOrientation="portrait"
@@ -118,52 +29,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
-        <!--<receiver android:name="com.huimee.dabaoapp.reciever.ShortcutsReciever" />-->
-        <!--        <activity
-                    android:exported="true"
-                    android:name=".wxapi.WXEntryActivity"
-                    android:launchMode="singleTop"
-                    android:theme="@android:style/Theme.NoDisplay"/>-->
-        <!-- ShareSDK的activity -->
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-
-
+            android:windowSoftInputMode="stateHidden|adjustResize" /> <!-- <receiver android:name="com.huimee.dabaoapp.reciever.ShortcutsReciever" /> -->
+        <!--
+        <activity
+                    android:exported="true"
+                    android:name=".wxapi.WXEntryActivity"
+                    android:launchMode="singleTop"
+                    android:theme="@android:style/Theme.NoDisplay"/>
+        -->
+        <!-- ShareSDK的activity -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <!--<activity-->
-            <!--android:name="com.huimee.dabaoappplus.wxapi.WXEntryActivity"-->
-            <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
-            <!--android:exported="true"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
-
-        <activity-alias
-            android:name="${applicationId}.wxapi.WXEntryActivity"
+        <activity
+            android:name="com.huimee.dabaoappplus.wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:targetActivity=".wxapi.WXEntryActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-
-        <!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret -->
-        <meta-data
-            android:name="Mob-AppKey"
-            android:value="2516fc46a8680" />
-        <meta-data
-            android:name="Mob-AppSecret"
-            android:value="1566e0f46b9b59fd6edc1a8e2ec442da" />
-
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -176,15 +64,19 @@
 
                 <data android:scheme="111" />
             </intent-filter>
-        </activity>
-
-
+        </activity> <!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret -->
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="2516fc46a8680" />
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="1566e0f46b9b59fd6edc1a8e2ec442da" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -196,15 +88,63 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <!--注册广播-->
         <receiver android:name=".install.InstallReceiver">
             <intent-filter android:priority="100">
                 <action android:name="android.intent.action.DOWNLOAD.COMPLETE" />
             </intent-filter>
-
-        </receiver>
-
-
+        </receiver> <!-- 注册广播 -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
+    <uses-feature android:name="android.hardware.camera" /> <!-- 移除快捷方式 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher2.permission.INSTALL_SHORTCUT" /> <!-- 查询快捷方式 -->
+    <uses-permission android:name="com.android.launcher3.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher2.permission.UNINSTALL_SHORTCUT" /> <!-- 其他快捷方式权限 -->
+    <uses-permission android:name="com.android.launcher3.permission.UNINSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.android.launcher2.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.android.launcher3.permission.READ_SETTINGS" />
+    <uses-permission android:name="org.adw.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.qihoo360.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.lge.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="net.qihoo.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="org.adwfreak.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="org.adw.launcher_donut.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.huawei.launcher3.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.fede.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.sec.android.app.twlauncher.settings.READ_SETTINGS" />
+    <uses-permission android:name="com.anddoes.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.tencent.qqlauncher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.huawei.launcher2.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.android.mylauncher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.ebproductions.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.lenovo.launcher.permission.READ_SETTINGS" /> <!-- 百度地图 -->
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" /> <!-- 这个权限用于访问GPS定位 --><!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 --><!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- Required  一些系统要求的权限，如访问网络等 -->
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 开启闪光灯权限 -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
 </manifest>

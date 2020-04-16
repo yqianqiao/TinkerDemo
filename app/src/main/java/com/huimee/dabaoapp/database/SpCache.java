@@ -77,7 +77,7 @@ public class SpCache {
     private String mPrefFileName = "yxlx_spcache";
     private Context mContext;
 
-    private SpCache(Context context, String prefFileName) {
+    public SpCache(Context context, String prefFileName) {
         mContext = context.getApplicationContext();
         mCache = new ConcurrentHashMap<>();
         initDatas(prefFileName);

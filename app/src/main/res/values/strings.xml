@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">搜游记</string>
+    <string name="app_name">搜游记云游戏</string>
+<!--    <string name="app_name">搜游记云游戏</string>-->
     <string name="db_yd">云巅</string>
     <string name="db_ssss">三生三世</string>
     <string name="db_qgwjd">清宫无间斗</string>

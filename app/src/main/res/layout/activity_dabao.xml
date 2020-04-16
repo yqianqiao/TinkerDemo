@@ -55,13 +55,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:text="QQ登录" />
+        android:text="登录" />
 
-    <Button
-        android:id="@+id/login11"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        android:text="这是补丁包" />
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="这是补丁包" />-->
 </RelativeLayout>
 

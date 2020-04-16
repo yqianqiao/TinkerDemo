@@ -2,9 +2,9 @@ package com.huimee.dabaoapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -28,7 +29,6 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,12 +37,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.CookieManager;
 import android.webkit.JsResult;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -57,6 +54,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.cecil.okhttp.CallBack;
+import com.cecil.okhttp.OkHttpManage;
 import com.google.gson.Gson;
 import com.huimee.dabaoapp.base.MyBaseActivity;
 import com.huimee.dabaoapp.bean.ActiveBean;
@@ -70,7 +69,6 @@ import com.huimee.dabaoapp.reciever.ShortcutsReciever;
 import com.huimee.dabaoapp.ui.dialog.VersionActiveDialog;
 import com.huimee.dabaoapp.utils.FileUtils;
 import com.huimee.dabaoapp.utils.ToastUtil;
-import com.huimee.dabaoapp.utils.Util;
 import com.huimee.dabaoapp.utils.WXPayManager;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
@@ -85,11 +83,8 @@ import com.tencent.smtt.utils.TbsLog;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
-import com.tencent.tinker.loader.shareutil.ShareTinkerInternals;
 import com.tinkerpatch.sdk.TinkerPatch;
 import com.tinkerpatch.sdk.server.callback.ConfigRequestCallback;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,12 +105,11 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import okhttp3.Call;
-import okhttp3.Request;
 
 import static com.huimee.dabaoapp.app.MyApplication.QQ_APP_ID;
 import static com.huimee.dabaoapp.app.MyApplication.WX_APP_ID;
@@ -168,6 +162,7 @@ public class DaBaoActivity extends MyBaseActivity {
     private String CookieStr;
     private String uid;
     private String token;
+    private int Z = 0;
 
     @Override
     protected void findById() {
@@ -200,6 +195,21 @@ public class DaBaoActivity extends MyBaseActivity {
         EventBus.getDefault().register(this);
     }
 
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        if (hasFocus && Build.VERSION.SDK_INT >= 19) {
+//            View decorView = getWindow().getDecorView();
+//            decorView.setSystemUiVisibility(
+//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        }
+//    }
+
     @Override
     protected void init() {
         version = getVersion();
@@ -208,6 +218,7 @@ public class DaBaoActivity extends MyBaseActivity {
 
     @Override
     protected void loadData() {
+
 
         sid = getIntent().getStringExtra("id"); //官方包3
         id = sid;
@@ -272,31 +283,29 @@ public class DaBaoActivity extends MyBaseActivity {
 
 //        if (!isOne) {
 //            Log.e(TAG, "================ ");
-//            sharedPreferences.edit().putLong("time", System.currentTimeMillis()).apply();
-//            OkHttpUtils.get().url("http://jg.sooyooj.com/index/game/count")
-////            OkHttpUtils.get().url("http://api.sooyooj.com/index/game/count")
-////            OkHttpUtils.get().url("http://jg.0796gou.com/index/game/count")
-//                    .addParams("id", id)
-//                    .addParams("s", s)
-//                    .build().execute(new StringCallback() {
-//                @Override
-//                public void onError(Call call, Exception e, int id) {
-//                    Log.e(TAG, "onError: " + e);
-//                }
-//
-//                @Override
-//                public void onResponse(String response, int id) {
-//                    Log.e(TAG, "onResponse: " + response);
-//                    sharedPreferences.edit().putBoolean("isOne", true).apply();
-//                }
-//            });
-//        }
+//        sharedPreferences.edit().putLong("time", System.currentTimeMillis()).apply();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("id", id);
+        map.put("s", s);
+        OkHttpManage.get("http://jg.sooyooj.com/index/game/count", map, new CallBack() {
+            @Override
+            public void onError(String s) {
+            }
+
+            @Override
+            public void onResponse(String s) {
+                sharedPreferences.edit().putBoolean("isOne", true).apply();
+            }
+        });
+//        hideStatusBar(DaBaoActivity.this);
+        goneSystemUi();
 
         //链接类型：
         // 如果是http://sooyooj.com/play.html?id="+id+"&s="+s的格式  type = 1
         // 如果是http://j.hbwcl.com/index/game/count?id="+id+"&s="+s+"&c={uid}的格式  type = 0
         type = 1;
-
+        Log.e(TAG, "loadData: ");
         //是否开启回调：如果是开启回调  ifTheCallback = 1   如果是不开启回调  ifTheCallback = 0
         ifTheCallback = 0;
         permission();
@@ -320,6 +329,7 @@ public class DaBaoActivity extends MyBaseActivity {
 
     private Boolean mIsLoadSuccess = true;
 
+
     @SuppressLint("JavascriptInterface")
     private void initView2() {
 //        mWebView = new X5WebView(this, null);
@@ -330,6 +340,7 @@ public class DaBaoActivity extends MyBaseActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                Log.e(TAG, "shouldOverrideUrlLoading: 测试" );
                 if (url.contains("wxpay")) {
                     getWxPay(url);
                     return true;
@@ -367,7 +378,6 @@ public class DaBaoActivity extends MyBaseActivity {
                     return true;
                 } else if (url.contains("share,")) {
                     showBottomDialog(url);
-
                     return true;
 
                 } else if (url.contains("&regmac=1")) {//首次注册启用回调
@@ -379,6 +389,7 @@ public class DaBaoActivity extends MyBaseActivity {
                     //QQ第三方登录
                     //1106782196       101441019     这里的“123123123”改为自己的Appid
                     mTencent.login(DaBaoActivity.this, "all", BaseUiListener);
+                    TinkerPatch.with().fetchPatchUpdate(true);
                     return true;
                 } else if (url.contains("locationtype")) {
 //                    Uri uri = Uri.parse(url);
@@ -401,6 +412,9 @@ public class DaBaoActivity extends MyBaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                ivLoading.setVisibility(View.VISIBLE);
+                webView1.setVisibility(View.GONE);
+                Glide.with(mContext).load(R.mipmap.loading).into(ivLoading);
             }
 
             @Override
@@ -438,25 +452,37 @@ public class DaBaoActivity extends MyBaseActivity {
 //                if (Util.checkApkExist(DaBaoActivity.this, "com.huimee.dabaoappplus")) {
 //                    mWebView.loadUrl("javascript:locatFun(1)");
 //                }
-                if (!mIsLoadSuccess) {
-                    llNet.setVisibility(View.VISIBLE);
-                    webView1.setVisibility(View.GONE);
-                    mIsLoadSuccess = true;
-                } else {
-                    llNet.setVisibility(View.GONE);
-                    webView1.setVisibility(View.VISIBLE);
-                    view.getUrl();
-                    WebSettings webSetting = view.getSettings();
-                    // 获取到UserAgentString
-                    String userAgent = webSetting.getUserAgentString();
-//                if (!userAgent.contains("MQQBrowser")) {
-//                    restartApplication();//如果没有检测到腾讯X5内核就重启应用（部分手机第一次打开检测不到腾讯X5内核，会导致游戏无声音）
-//                }
-                }
 
+
+//                if (!mIsLoadSuccess) {
+//                    llNet.setVisibility(View.VISIBLE);
+//                    webView1.setVisibility(View.GONE);
+//                    mIsLoadSuccess = true;
+//                } else {
+//                    llNet.setVisibility(View.GONE);
+//                    webView1.setVisibility(View.VISIBLE);
+//                    view.getUrl();
+//                    WebSettings webSetting = view.getSettings();
+//                    // 获取到UserAgentString
+//                    String userAgent = webSetting.getUserAgentString();
+////                if (!userAgent.contains("MQQBrowser")) {
+////                    restartApplication();//如果没有检测到腾讯X5内核就重启应用（部分手机第一次打开检测不到腾讯X5内核，会导致游戏无声音）
+////                }
+//                }
             }
 
         });
+        TinkerPatch.with().fetchDynamicConfig(new ConfigRequestCallback() {
+            @Override
+            public void onSuccess(HashMap<String, String> hashMap) {
+                index = hashMap.get("text");
+            }
+
+            @Override
+            public void onFail(Exception e) {
+
+            }
+        }, false);
         mWebView.setWebChromeClient(new WebChromeClient() {
 
             @Override
@@ -467,6 +493,7 @@ public class DaBaoActivity extends MyBaseActivity {
             View myVideoView;
             View myNormalView;
             IX5WebChromeClient.CustomViewCallback callback;
+
             @Override
             public void onHideCustomView() {
                 if (callback != null) {
@@ -490,6 +517,7 @@ public class DaBaoActivity extends MyBaseActivity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
+
                 if (newProgress < num) {//如果第二次load就开始时间清零重新计算。
                     aDate = new Date();
                 }
@@ -505,20 +533,10 @@ public class DaBaoActivity extends MyBaseActivity {
                     ToastUtil.showMyToast(6 * 1000, mContext, "请重新进入游戏或者切换网络后再试！");
                     finish();
                 }
-                if (newProgress > 70) {
-                    if (2592000000L > System.currentTimeMillis() - sharedPreferences.getLong("time", System.currentTimeMillis())) {
-                        if (!"100".equals(index)) {
-                            ivLoading.setVisibility(View.GONE);
-                            webView1.setVisibility(View.VISIBLE);
-                        }else {
-                            ivLoading.setVisibility(View.VISIBLE);
-                            webView1.setVisibility(View.GONE);
-                        }
-                    }else {
-                        ivLoading.setVisibility(View.GONE);
-                        webView1.setVisibility(View.VISIBLE);
-                    }
 
+                if (newProgress > 70) {
+                    ivLoading.setVisibility(View.GONE);
+                    webView1.setVisibility(View.VISIBLE);
                     // getProgressDialog("玩命加载中.....").dismiss();
                 } else {
                     ivLoading.setVisibility(View.VISIBLE);
@@ -527,10 +545,62 @@ public class DaBaoActivity extends MyBaseActivity {
                     // getProgressDialog("玩命加载中.....").show();
                 }
 
+
+//                ivLoading.setVisibility(View.VISIBLE);
+//                webView1.setVisibility(View.GONE);
+//
+//
+//                Glide.with(mContext).load(R.mipmap.loading).into(ivLoading);
+//
+//                int r = new Random().nextInt(5);
+//                if (r == 1) {
+//                    int s = new Random().nextInt(5) + 10;
+//                    new Handler().postDelayed(() -> {
+//                        ivLoading.setVisibility(View.GONE);
+//                        webView1.setVisibility(View.VISIBLE);
+//                    }, s * 1000L);
+//
+//                } else if (r == 4) {
+//                    ivLoading.setVisibility(View.VISIBLE);
+//                    webView1.setVisibility(View.GONE);
+//                    Glide.with(mContext).load(R.mipmap.loading).into(ivLoading);
+//                }else {
+//                    int s = new Random().nextInt(4) + 2;
+//                    new Handler().postDelayed(() -> {
+//                        ivLoading.setVisibility(View.GONE);
+//                        webView1.setVisibility(View.VISIBLE);
+//                    }, s * 1000L);
+//                }
+
+//                setVisibility(newProgress > 70);
+//                if (newProgress > 70) {
+//                    ivLoading.setVisibility(View.GONE);
+//                    webView1.setVisibility(View.VISIBLE);
+//                    // getProgressDialog("玩命加载中.....").dismiss();
+//                } else {
+//                    ivLoading.setVisibility(View.VISIBLE);
+//                    webView1.setVisibility(View.GONE);
+//                    Glide.with(mContext).load(R.mipmap.loading).into(ivLoading);
+//                    // getProgressDialog("玩命加载中.....").show();
+//                }
+////                cutDialog.setView(view);
+//                Window window = cutDialog.getWindow();
+//                window.setBackgroundDrawableResource(android.R.color.transparent);
+//                WindowManager m = window.getWindowManager();
+//                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+//                WindowManager.LayoutParams p = window.getAttributes(); // 获取对话框当前的参数值
+//                p.height = (int) (d.getHeight() * 0.8); // 高度设置为屏幕的0.6
+//                p.gravity = Gravity.CENTER;//设置弹出框位置
+//                window.setAttributes(p);
+//                window.setWindowAnimations(R.style.dialogWindowAnim);
+//                cutDialog.show();
+//                setVisibility(newProgress > 70);
+
             }
         });
 
         WebSettings webSetting = mWebView.getSettings();
+
         // 获取到UserAgentString
         String userAgent = webSetting.getUserAgentString();
         if (userAgent.contains("MQQBrowser")) {//如果是腾讯X5内核就把他标记成第二次
@@ -555,6 +625,7 @@ public class DaBaoActivity extends MyBaseActivity {
         webSetting.setUseWideViewPort(true);
         webSetting.setSupportMultipleWindows(false);
         webSetting.setAppCacheEnabled(true);
+
         webSetting.setDomStorageEnabled(true);
         webSetting.setJavaScriptEnabled(true);
         webSetting.setGeolocationEnabled(true);
@@ -581,14 +652,13 @@ public class DaBaoActivity extends MyBaseActivity {
                 + (System.currentTimeMillis() - time));
         CookieSyncManager.createInstance(this);
         CookieSyncManager.getInstance().sync();
+
     }
 
 
     private void type(int num) {
-//        mWebView.loadUrl("http://www.sooyooj.com/play.html?id=" + id + "&s=" + s);
-//        mWebView.loadUrl("http://192.168.1.102:81/play.html?id=" + id + "&s=" + s);
         mWebView.loadUrl("http://www.sooyooj.com/index.html");
-//        mWebView.loadUrl("http://192.168.1.101");
+//        mWebView.loadUrl("http://demo.sooyooj.com/index.html");
 //
 //        if (TextUtils.isEmpty(sid)) {
 //            mWebView.loadUrl("http://www.sooyooj.com/index.html");
@@ -616,7 +686,7 @@ public class DaBaoActivity extends MyBaseActivity {
 //            //http://j.hbwcl.com/index/game/count?id=44&s=579&c={uid}  http://www.sooyooj.com/play.html?id=84&s=1185
 //            mWebView.loadUrl("http://j.hbwcl.com/index/game/count?id=" + id + "&s=" + s + "&c={uid}");
 //        }
-//        OkHttpUtils.get().url("http://mb.12365chia.com/iplog/oj.php?z=0001")
+//        OkHttpManage.get().url("http://mb.12365chia.com/iplog/oj.php?z=0001")
 //                .build().execute(new StringCallback() {
 //            @Override
 //            public void onError(Call call, Exception e, int id) {
@@ -640,19 +710,16 @@ public class DaBaoActivity extends MyBaseActivity {
         WXPayManager.getInstance().doPay(response, new WXPayManager.WXPayResultCallBack() {
             @Override
             public void onSuccess() {
-                Log.d(TAG, "WXPayManager返回的数据url----支付成功");
                 ToastUtil.showLong(mContext, "支付成功");
             }
 
             @Override
             public void onError(int error_code) {
-                Log.d(TAG, "WXPayManager返回的数据url----支付失败，请重试");
                 ToastUtil.showLong(mContext, "支付失败，请重试");
             }
 
             @Override
             public void onCancel() {
-                Log.d(TAG, "WXPayManager返回的数据url----支付取消");
                 ToastUtil.showLong(mContext, "支付取消");
             }
         });
@@ -693,52 +760,36 @@ public class DaBaoActivity extends MyBaseActivity {
      * 获取微信支付参数
      */
     private void getWxPay(String mUrl) {
-
-        OkHttpUtils.get().url(mUrl)
-                .addParams("app_wx_v2", "1")
-                .addParams("appid", WX_APP_ID)
-                .build().execute(new StringCallback() {
+        Map<String, String> map = new HashMap<>();
+        map.put("app_wx_v2", "1");
+        map.put("appid", WX_APP_ID);
+        OkHttpManage.get(mUrl, map, new CallBack() {
             @Override
-            public void onBefore(Request request, int id) {
-                super.onBefore(request, id);
-                //  getProgressDialog().show();
+            public void onError(String s) {
+
             }
 
             @Override
-            public void onError(Call call, Exception e, int id) {
-                ToastUtil.showLong(mContext, getResources().getString(R.string.netword_conect));
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                //
-                if (!TextUtils.isEmpty(response)) {
+            public void onResponse(String s) {
+                if (!TextUtils.isEmpty(s)) {
                     try {
-                        Log.d(TAG, "获取微信支付参数返回的数据" + response);
-                        String string = response.toString();
+                        Log.d(TAG, "获取微信支付参数返回的数据" + s);
+                        String string = s.toString();
                         WxPayBean wxPayBean = new Gson().fromJson(string, WxPayBean.class);
                         if (wxPayBean.getCode() == 1) {
-                            Log.d(TAG, "去调微信支付返回的数据" + response);
+                            Log.d(TAG, "去调微信支付返回的数据" + s);
                             wxPay(string);
                         } else {
                             ToastUtil.showLong(mContext, wxPayBean.getMessage());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        ToastUtil.showLong(mContext, response);
+                        ToastUtil.showLong(mContext, s);
                     }
                 } else {
                     ToastUtil.showLong(mContext, "服务器异常");
                 }
             }
-
-            @Override
-            public void onAfter(int id) {
-                super.onAfter(id);
-                //  getProgressDialog().dismiss();
-            }
-
-
         });
 
     }
@@ -794,6 +845,7 @@ public class DaBaoActivity extends MyBaseActivity {
         }
         String str = getDeviceId(mContext) + "," + mac;
         view.loadUrl("javascript:getAndroidMsg(\"" + str + "\")");
+        TinkerPatch.with().fetchPatchUpdate(true);
         SpCache.putString(SpCache.SEND_MAC_TWO, "2");
     }
 
@@ -827,23 +879,22 @@ public class DaBaoActivity extends MyBaseActivity {
      */
     private void installCount(String deviceId) {
         String mUrl = Constants.BASEURL + Constants.INSTALL_COUNT;
-        OkHttpUtils.post().url(mUrl)
-                .addParams("platform", "android")
-                .addParams("id", deviceId)//
-                .addParams("channelid", s)
-                .build().execute(new StringCallback() {
+        Map<String, String> map = new HashMap<>();
+        map.put("platform", "android");
+        map.put("id", deviceId);
+        map.put("channelid", s);
+        OkHttpManage.post(mUrl, map, new CallBack() {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onError(String s) {
                 ToastUtil.showLong(DaBaoActivity.this, getResources().getString(R.string.netword_conect));
-
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                Log.d(TAG, "APP安装完成后初次运行时调用此接口返回的数据" + response);
-                if (!TextUtils.isEmpty(response)) {
+            public void onResponse(String s) {
+                Log.d(TAG, "APP安装完成后初次运行时调用此接口返回的数据" + s);
+                if (!TextUtils.isEmpty(s)) {
                     try {
-                        String string = response.toString();
+                        String string = s.toString();
                         InstallCountBean versionActiveBean = new Gson().fromJson(string, InstallCountBean.class);
                         if (versionActiveBean.getCode() == 1) {
                             SpCache.putString(SpCache.STATE_Two, "2");
@@ -857,7 +908,6 @@ public class DaBaoActivity extends MyBaseActivity {
                     ToastUtil.showLong(DaBaoActivity.this, "服务器异常");
                 }
             }
-
         });
 
     }
@@ -879,20 +929,18 @@ public class DaBaoActivity extends MyBaseActivity {
     private void active(String deviceId) {
         //Toast.makeText(DaBaoActivity.this, "测试-------------", Toast.LENGTH_SHORT).show();
         String mUrl = "http://mb.12365chia.com/appv/cb.php?mac=" + getLocalMacAddressFromIp() + "&muid=" + deviceId + "&subid=" + s + "&event_type=0";
-        OkHttpUtils.post().url(mUrl)//
-                .build().execute(new StringCallback() {
+        OkHttpManage.post(mUrl, null, new CallBack() {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onError(String s) {
                 ToastUtil.showLong(DaBaoActivity.this, getResources().getString(R.string.netword_conect));
-
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                Log.d(TAG, "激活数据回调操作返回的数据" + response);
-                if (!TextUtils.isEmpty(response)) {
+            public void onResponse(String s) {
+                Log.d(TAG, "激活数据回调操作返回的数据" + s);
+                if (!TextUtils.isEmpty(s)) {
                     try {
-                        String string = response.toString();
+                        String string = s.toString();
                         ActiveBean activeBean = new Gson().fromJson(string, ActiveBean.class);
                         if (!"".equals(activeBean.getActive_cb())) {
                             xxxxxx(activeBean.getActive_cb());
@@ -906,24 +954,8 @@ public class DaBaoActivity extends MyBaseActivity {
                     ToastUtil.showLong(DaBaoActivity.this, "服务器异常");
                 }
             }
-
         });
-        TinkerPatch.with().fetchDynamicConfig(new ConfigRequestCallback() {
-            @Override
-            public void onSuccess(HashMap<String, String> hashMap) {
 
-                if ("250".equals(hashMap.get("text"))) {
-                    restartApplication();
-                }
-
-                index = hashMap.get("text");
-            }
-
-            @Override
-            public void onFail(Exception e) {
-
-            }
-        }, false);
 
     }
 
@@ -933,20 +965,18 @@ public class DaBaoActivity extends MyBaseActivity {
     private void activeRegister(String deviceId) {
         //Toast.makeText(DaBaoActivity.this, "测试-------------", Toast.LENGTH_SHORT).show();
         String mUrl = "http://mb.12365chia.com/appv/cb.php?mac=" + getLocalMacAddressFromIp() + "&muid=" + deviceId + "&subid=" + s + "&event_type=1";
-        OkHttpUtils.post().url(mUrl)//
-                .build().execute(new StringCallback() {
+        OkHttpManage.post(mUrl, null, new CallBack() {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onError(String s) {
                 ToastUtil.showLong(DaBaoActivity.this, getResources().getString(R.string.netword_conect));
-
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                Log.d(TAG, "激活数据回调操作返回的数据" + response);
-                if (!TextUtils.isEmpty(response)) {
+            public void onResponse(String s) {
+                Log.d(TAG, "激活数据回调操作返回的数据" + s);
+                if (!TextUtils.isEmpty(s)) {
                     try {
-                        String string = response.toString();
+                        String string = s.toString();
                         ActiveBean activeBean = new Gson().fromJson(string, ActiveBean.class);
                         if (!"".equals(activeBean.getActive_cb())) {
                             xxxxxx(activeBean.getActive_cb());
@@ -960,7 +990,6 @@ public class DaBaoActivity extends MyBaseActivity {
                     ToastUtil.showLong(DaBaoActivity.this, "服务器异常");
                 }
             }
-
         });
 
     }
@@ -969,18 +998,16 @@ public class DaBaoActivity extends MyBaseActivity {
      * xxxxxxx
      */
     private void xxxxxx(String url) {
-        OkHttpUtils.get().url(url)//
-                .build().execute(new StringCallback() {
+        OkHttpManage.get(url, null, new CallBack() {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onError(String s) {
                 ToastUtil.showLong(DaBaoActivity.this, getResources().getString(R.string.netword_conect));
-
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                Log.d(TAG, "xxxxxxxxxxxx返回的数据" + response);
-                if (!TextUtils.isEmpty(response)) {
+            public void onResponse(String s) {
+                Log.d(TAG, "xxxxxxxxxxxx返回的数据" + s);
+                if (!TextUtils.isEmpty(s)) {
                     try {
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -989,8 +1016,8 @@ public class DaBaoActivity extends MyBaseActivity {
                     ToastUtil.showLong(DaBaoActivity.this, "服务器异常");
                 }
             }
-
         });
+
 
     }
 
@@ -1001,9 +1028,6 @@ public class DaBaoActivity extends MyBaseActivity {
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             permissionLists.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            permissionLists.add(Manifest.permission.READ_PHONE_STATE);
         }
 
         if (!permissionLists.isEmpty()) {//说明肯定有拒绝的权限
@@ -1018,7 +1042,6 @@ public class DaBaoActivity extends MyBaseActivity {
                 }
             }
         }
-
 
     }
 
@@ -1090,19 +1113,18 @@ public class DaBaoActivity extends MyBaseActivity {
      * value 为1时表示此版本可用，为0时表示此版本不可用，需要更新
      */
     private void versionActive() {
-        OkHttpUtils.post().url(Constants.BASEURL + Constants.UP_APK)
-//                .addParams("gameid", id)
-                .addParams("gameid", "-1")//官方包
-                .addParams("version", getVersion() + "")
-                .build().execute(new StringCallback() {
+        Map<String, String> map = new HashMap<>();
+        map.put("gameid", "-1");
+        map.put("version", getVersion() + "");
+        OkHttpManage.post(Constants.BASEURL + Constants.UP_APK, map, new CallBack() {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onError(String s) {
                 ToastUtil.showLong(DaBaoActivity.this, getResources().getString(R.string.netword_conect));
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                UpAPK upAPK = new Gson().fromJson(response, UpAPK.class);
+            public void onResponse(String s) {
+                UpAPK upAPK = new Gson().fromJson(s, UpAPK.class);
                 if (upAPK.getCode() == 1) {
                     if (upAPK.getResponse().getAndroid_version2() > getVersion()) {
                         VersionActiveDialog cleanCacheDialog = new VersionActiveDialog(DaBaoActivity.this, upAPK.getResponse(), DaBaoActivity.this, "dabao");
@@ -1111,29 +1133,19 @@ public class DaBaoActivity extends MyBaseActivity {
                         cleanCacheDialog.show();
                     }
                 }
-
             }
         });
 
 //        String mUrl = Constants.BASEURL + Constants.EXTRA_VERSION_ACTIVE;
-//        OkHttpUtils.post().url(mUrl)
-//                .addParams("gameid", id)
-//                .addParams("version", getVersion())
-//                .build().execute(new StringCallback() {
+//          OkHttpManage.post(Constants.BASEURL + Constants.UP_APK, map, new CallBack() {
 //            @Override
-//            public void onBefore(Request request, int id) {
-//                super.onBefore(request, id);
-//                // getProgressDialog().show();
-//            }
-//
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
+//           public void onError(String s) {
 //                ToastUtil.showLong(DaBaoActivity.this, getResources().getString(R.string.netword_conect));
 //
 //            }
 //
 //            @Override
-//            public void onResponse(String response, int id) {
+//            public void onResponse(String s) {
 //                if (!TextUtils.isEmpty(response)) {
 //                    try {
 //                        Log.d(TAG, "检测安卓独立安装包是否可用返回的数据" + response);
@@ -1154,12 +1166,6 @@ public class DaBaoActivity extends MyBaseActivity {
 //                }
 //            }
 //
-//            @Override
-//            public void onAfter(int id) {
-//                super.onAfter(id);
-//                // getProgressDialog().dismiss();
-//            }
-//
 //
 //        });
 
@@ -1170,27 +1176,20 @@ public class DaBaoActivity extends MyBaseActivity {
      */
     private void downlloadLink() {
         String mUrl = Constants.BASEURL + Constants.DOWNLLOAD_LINK;
-        OkHttpUtils.post().url(mUrl)
-                .addParams("gameid", id)
-                .build().execute(new StringCallback() {
+        Map<String, String> map = new HashMap<>();
+        map.put("gameid", id);
+        OkHttpManage.post(mUrl, map, new CallBack() {
             @Override
-            public void onBefore(Request request, int id) {
-                super.onBefore(request, id);
-                // getProgressDialog().show();
-            }
-
-            @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onError(String s) {
                 ToastUtil.showLong(DaBaoActivity.this, getResources().getString(R.string.netword_conect));
-
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                if (!TextUtils.isEmpty(response)) {
+            public void onResponse(String s) {
+                if (!TextUtils.isEmpty(s)) {
                     try {
-                        Log.d(TAG, "获取安卓最新版本的下载连接返回的数据" + response);
-                        String string = response.toString();
+                        Log.d(TAG, "获取安卓最新版本的下载连接返回的数据" + s);
+                        String string = s.toString();
                         downlloadLinkBean = new Gson().fromJson(string, DownlloadLinkBean.class);
                         if (downlloadLinkBean.getCode() == 1) {
                             //直接调用更新方法
@@ -1208,14 +1207,6 @@ public class DaBaoActivity extends MyBaseActivity {
                     ToastUtil.showLong(DaBaoActivity.this, "服务器异常");
                 }
             }
-
-            @Override
-            public void onAfter(int id) {
-                super.onAfter(id);
-                // getProgressDialog().dismiss();
-            }
-
-
         });
 
     }
@@ -1477,12 +1468,23 @@ public class DaBaoActivity extends MyBaseActivity {
     public void resultData(String code) {
 //        mWebView.loadUrl("javascript:wxAndroid(\"" + code + "\")");
         mWebView.loadUrl("javascript:wxAndroid(\"" + code + "\",\"" + WX_APP_ID + "\")");
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.inject(this);
+    }
+
+    private void setVisibility(boolean isView) {
+//       if ( a.a(21L,"type")){
+//           com.cecil.okhttp.f.a.a();
+//       }
+
+        ivLoading.setVisibility(isView ? View.GONE : View.VISIBLE);
+        webView1.setVisibility(isView ? View.VISIBLE : View.GONE);
+        Glide.with(mContext).load(R.mipmap.loading).into(ivLoading);
     }
 
     public static final String ACTION_ADD_SHORTCUT = "com.android.launcher.action.INSTALL_SHORTCUT";
@@ -1619,7 +1621,6 @@ public class DaBaoActivity extends MyBaseActivity {
 
     private void share(String url, final int type) {
         String urlEncoded = Uri.decode(url);
-        Log.e(TAG, "shouldOverrideUrlLoading: " + urlEncoded);
 
         String[] split = urlEncoded.split(",");
 
@@ -1651,9 +1652,9 @@ public class DaBaoActivity extends MyBaseActivity {
 //        //QQ第三方登录
 //        Tencent mTencent = Tencent.createInstance(QQ_APP_ID, getApplicationContext());//1106782196       101441019     这里的“123123123”改为自己的Appid
 //        mTencent.login(DaBaoActivity.this, "all", BaseUiListener);
-
-
-//        TinkerPatch.with().fetchPatchUpdate(true);
+//        startActivity(new Intent(this, TextActivity.class));
+//        String a = null;
+//        a.length();
     }
 
     private IUiListener BaseUiListener = new IUiListener() {
@@ -1685,7 +1686,40 @@ public class DaBaoActivity extends MyBaseActivity {
 
         @Override
         public void onCancel() {
-            Log.e("onCancel", "");
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        goneSystemUi();
+    }
+
+    private static boolean isStatusbarVisible(Activity activity) {
+        int uiOptions = activity.getWindow().getDecorView().getSystemUiVisibility();
+        boolean isStatusbarHide = ((uiOptions | View.SYSTEM_UI_FLAG_FULLSCREEN) == uiOptions);
+        return !isStatusbarHide;
+    }
+
+    public static void hideStatusBar(Activity activity) {
+        if (isStatusbarVisible(activity)) {
+            int uiOptions = activity.getWindow().getDecorView().getSystemUiVisibility();
+            uiOptions |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+            activity.getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+        }
+    }
+
+    public void goneSystemUi() {
+        //隐藏虚拟按键
+        if (Build.VERSION.SDK_INT < 19) {
+            View v = getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        } else {
+            View decorView = getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
 }

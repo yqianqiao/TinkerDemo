@@ -19,10 +19,6 @@ import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
 import com.tinkerpatch.sdk.server.callback.ConfigRequestCallback;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.cookie.CookieJarImpl;
-import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
-import com.zhy.http.okhttp.log.LoggerInterceptor;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -128,42 +124,12 @@ public class MyApplication extends Application {
         // UMConfigure.init(this,"5ad5c5f38f4a9d7314000052","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0//----5a12384aa40fa3551f0001d1
         //PlatformConfig.setWeixin("wxdd29219ca4d0fde1", "ab6e8d46821d32a8dec6491f9205b5b8");
         // SocializeConstants.SDK_VERSION
-        if (TextUtils.equals("com.huimee.dabaoapp", BuildConfig.APPLICATION_ID)) {
-            WX_APP_ID = "wxdd29219ca4d0fde1";
-            QQ_APP_ID = "101521877";
-            mUserAgent = "_android_app_v1.7_dabaoapp";
-        } else if (TextUtils.equals("com.huimee.dabaoappplus", BuildConfig.APPLICATION_ID)) {
-            WX_APP_ID = "wx4df863a2c1e83fc0";
-            QQ_APP_ID = "101521879";
-            mUserAgent = "_android_app_v1.7_syjplus";
-            UMConfigure.init(this, "5d47db204ca357d6b5000220", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
-            // 选用AUTO页面采集模式
-            UMConfigure.setLogEnabled(true);
-        } else if (TextUtils.equals("com.huimee.dabaoappxs", BuildConfig.APPLICATION_ID)) {
-            WX_APP_ID = "wx60c4bdb4e7bcd014";
-            QQ_APP_ID = "1107992990";
-            mUserAgent = "_android_app_v1.7_syjxs";
-        } else if (TextUtils.equals("com.huimee.hmsupergo", BuildConfig.APPLICATION_ID)) {
-            WX_APP_ID = "wxe40e0dffac7634f8";
-            QQ_APP_ID = "101612281";
-            mUserAgent = "_android_app_v1.7_hmsupergo";
-        } else if (TextUtils.equals("com.huimee.hmisland", BuildConfig.APPLICATION_ID)) {
-            WX_APP_ID = "wx3fc7c91704e3fe32";
-            QQ_APP_ID = "101612295";
-            mUserAgent = "_android_app_v1.7_hmisland";
-        } else if (TextUtils.equals("com.huimee.hmtlkt", BuildConfig.APPLICATION_ID)) {
-            WX_APP_ID = "wx47956eaf0b3d3e1c";
-            QQ_APP_ID = "101617720";
-            mUserAgent = "_android_app_v1.7_hmtlkt";
-        } else if (TextUtils.equals("com.huimee.hmtiantianrich", BuildConfig.APPLICATION_ID)) {
-            WX_APP_ID = "wx290bf6cb6ca1b928";
-            QQ_APP_ID = "101617724";
-            mUserAgent = "_android_app_v1.7_hmtiantianrich";
-        } else if (TextUtils.equals("com.huimee.youxuntianxiaapp", BuildConfig.APPLICATION_ID)) {
-            WX_APP_ID = "wx0ff3f368f7a53498";
-            QQ_APP_ID = "1106782196";
-            mUserAgent = "_android_app_v1.7_youxuntianxiaapp";
-        }
+        WX_APP_ID = "wx4df863a2c1e83fc0";
+        QQ_APP_ID = "101521879";
+        mUserAgent = "_android_app_v1.7_syjplus";
+        UMConfigure.init(this, "5d47db204ca357d6b5000220", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
+        // 选用AUTO页面采集模式
+        UMConfigure.setLogEnabled(true);
 
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
 
@@ -182,16 +148,15 @@ public class MyApplication extends Application {
          * Uid: user
          */
 
-        CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new LoggerInterceptor("TAG"))
-                .connectTimeout(300, TimeUnit.SECONDS)
-                .readTimeout(300, TimeUnit.SECONDS)
-                .cookieJar(cookieJar)
-                //其他配置
-                .build();
-
-        OkHttpUtils.initClient(okHttpClient);
+//        CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .addInterceptor(new LoggerInterceptor("TAG"))
+//                .connectTimeout(300, TimeUnit.SECONDS)
+//                .readTimeout(300, TimeUnit.SECONDS)
+//                .cookieJar(cookieJar)
+//                //其他配置
+//                .build();
+//
 
         Timber.plant(new Timber.DebugTree());
 
@@ -218,6 +183,7 @@ public class MyApplication extends Application {
         //x5内核初始化接口
         QbSdk.initX5Environment(getApplicationContext(), cb);
     }
+
     private void initTinkerPatch() {
         if (BuildConfig.TINKER_ENABLE) {
             tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
@@ -227,7 +193,8 @@ public class MyApplication extends Application {
                     .reflectPatchLibrary()
                     .setPatchRollbackOnScreenOff(true)
                     .setPatchRestartOnSrceenOff(true)
-                    .setFetchPatchIntervalByHours(3);
+                    .setFetchPatchIntervalByHours(3)
+                    .setFetchDynamicConfigIntervalByHours(3);
 
             TinkerPatch.with().fetchPatchUpdateAndPollWithInterval();
         }

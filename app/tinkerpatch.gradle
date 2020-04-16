@@ -7,7 +7,7 @@ import java.util.regex.Pattern
  * 请按自己的需求修改为适应自己工程的参数
  */
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-1.0.0-1118-11-27-21"
+def baseInfo = "app-1.8-0409-10-44-38"
 def variantName = "release"
 
 /**
@@ -22,19 +22,19 @@ tinkerpatchSupport {
      * 是否开启加固模式，只能在APK将要进行加固时使用，否则会patch失败。
      * 如果只在某个渠道使用了加固，可使用多flavors配置
      **/
-    protectedApp = false
+    protectedApp = true
     /**
      * 实验功能
      * 补丁是否支持新增 Activity (新增Activity的exported属性必须为false)
      **/
-    supportComponent = false
+    supportComponent = true
 
     autoBackupApkPath = "${bakPath}"
 
     appKey = "9cbbc1f6dc2a6097"
 
     /** 注意: 若发布新的全量包, appVersion一定要更新 **/
-    appVersion = "1.0.0"
+    appVersion = "1.8"
 
     def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
     def name = "${project.name}-${variantName}"
@@ -117,7 +117,7 @@ tinkerPatch {
  */
 def isRelease() {
     Gradle gradle = getGradle()
-    String  tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
+    String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
 
     Pattern pattern;
     if (tskReqStr.contains("assemble")) {

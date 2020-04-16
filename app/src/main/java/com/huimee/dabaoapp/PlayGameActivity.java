@@ -37,8 +37,6 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.tencent.smtt.utils.TbsLog;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
@@ -722,47 +720,7 @@ url="http://www.sooyooj.com/play.html?id=15&uid=15624&token=mG3chboySSdpbx4sxSGh
      * 获取微信支付参数
      */
     private void getWxPay(String mUrl) {
-        OkHttpUtils.post().url(mUrl)
-                .build().execute(new StringCallback() {
-            @Override
-            public void onBefore(Request request, int id) {
-                super.onBefore(request, id);
-            }
 
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                ToastUtil.showLong(mContext, getResources().getString(R.string.netword_conect));
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                //
-                if (!TextUtils.isEmpty(response)) {
-                    try {
-                        Log.d(TAG, "获取微信支付参数返回的数据" + response);
-                        String string = response.toString();
-                        WxPayBean wxPayBean = new Gson().fromJson(string, WxPayBean.class);
-                        if (wxPayBean.getCode() == 1) {
-                            Log.d(TAG, "去调微信支付返回的数据" + response);
-                            wxPay(string);
-                        } else {
-                            ToastUtil.showLong(mContext, wxPayBean.getMessage());
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    ToastUtil.showLong(mContext, "服务器异常");
-                }
-            }
-
-            @Override
-            public void onAfter(int id) {
-                super.onAfter(id);
-            }
-
-
-        });
 
     }
 
