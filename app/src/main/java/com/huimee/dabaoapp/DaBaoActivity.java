@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -262,6 +264,8 @@ public class DaBaoActivity extends MyBaseActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         //http://j.hbwcl.com/index/game/count?id=15&s=824&c={uid
 
+        Log.e(TAG, "loadData:pack" );
+
         //渠道ID
         SpCache.putString(SpCache.QD_ID, BuildConfig.s.toString());//做版本更新的时候记得把这行注释掉
         //游戏ID
@@ -284,6 +288,7 @@ public class DaBaoActivity extends MyBaseActivity {
 //        if (!isOne) {
 //            Log.e(TAG, "================ ");
 //        sharedPreferences.edit().putLong("time", System.currentTimeMillis()).apply();
+        new Handler().postDelayed(() -> clipboardAndroid(DaBaoActivity.this), 3000);
 
         Map<String, String> map = new HashMap<>();
         map.put("id", id);
@@ -311,6 +316,7 @@ public class DaBaoActivity extends MyBaseActivity {
         permission();
         versionActive();
         initView2();
+//        clipboardAndroid(this);
         tvRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -658,7 +664,9 @@ public class DaBaoActivity extends MyBaseActivity {
 
     private void type(int num) {
         mWebView.loadUrl("http://www.sooyooj.com/index.html");
-//        mWebView.loadUrl("http://demo.sooyooj.com/index.html");
+//        mWebView.loadUrl("http://192.168.0.105:81/index.html");
+//        mWebView.loadUrl("http://192.168.0.188:80/index.html");
+//        mWebView.loadUrl("http://tg.sooyooj.com/?u=1018081");
 //
 //        if (TextUtils.isEmpty(sid)) {
 //            mWebView.loadUrl("http://www.sooyooj.com/index.html");
@@ -681,7 +689,7 @@ public class DaBaoActivity extends MyBaseActivity {
 //            //外网的
 ////            mWebView.loadUrl("http://tg.sooyooj.com/?u=423887");
 //            mWebView.loadUrl("http://sooyooj.com/play.html?id=" + id + "&s=" + s);
-////            mWebView.loadUrl("http://192.168.1.101:80/play.html?id=" + id + "&s=" + s);
+////            mWebView.loadUrl("http://192.168.0.105:80/play.html?id=" + id + "&s=" + s);
 //        } else if (num == 0) {
 //            //http://j.hbwcl.com/index/game/count?id=44&s=579&c={uid}  http://www.sooyooj.com/play.html?id=84&s=1185
 //            mWebView.loadUrl("http://j.hbwcl.com/index/game/count?id=" + id + "&s=" + s + "&c={uid}");
@@ -1467,6 +1475,7 @@ public class DaBaoActivity extends MyBaseActivity {
     @Subscriber(tag = "aaa")
     public void resultData(String code) {
 //        mWebView.loadUrl("javascript:wxAndroid(\"" + code + "\")");
+//        mWebView.loadUrl("javascript:clipboardAndroid(\"" + code + "\")");
         mWebView.loadUrl("javascript:wxAndroid(\"" + code + "\",\"" + WX_APP_ID + "\")");
 
     }
@@ -1647,6 +1656,30 @@ public class DaBaoActivity extends MyBaseActivity {
         });
     }
 
+    private void clipboardAndroid(Context context) {
+        //系统剪贴板-获取:
+        // 获取系统剪贴板
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        // 返回数据
+        ClipData clipData = clipboard.getPrimaryClip();
+        if (clipData != null && clipData.getItemCount() > 0) {
+            // 从数据集中获取（粘贴）第一条文本数据
+            String text = clipData.getItemAt(0).getText().toString();
+            Log.e(TAG, "clipboardAndroid: text" +text );
+            if (text.length() < 5) return;
+            String start = text.substring(0, 2);
+            String end = text.substring(text.length() - 2, text.length());
+            if (TextUtils.equals("$$", start) && TextUtils.equals("$$", end)) {
+                Log.e(TAG, "clipboardAndroid: " + text);
+                mWebView.loadUrl("javascript:clipboardAndroid(\"" + text + "\")");
+            }
+        }else {
+            Log.e(TAG, "clipboardAndroid: 没有内容" );
+        }
+
+
+    }
+
     @OnClick(R.id.login)
     public void onViewClicked() {
 //        //QQ第三方登录
@@ -1655,6 +1688,8 @@ public class DaBaoActivity extends MyBaseActivity {
 //        startActivity(new Intent(this, TextActivity.class));
 //        String a = null;
 //        a.length();
+
+//        clipboardAndroid(this);
     }
 
     private IUiListener BaseUiListener = new IUiListener() {
@@ -1693,6 +1728,7 @@ public class DaBaoActivity extends MyBaseActivity {
     protected void onResume() {
         super.onResume();
         goneSystemUi();
+
     }
 
     private static boolean isStatusbarVisible(Activity activity) {

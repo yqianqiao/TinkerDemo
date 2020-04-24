@@ -34,7 +34,7 @@ tinkerpatchSupport {
     appKey = "9cbbc1f6dc2a6097"
 
     /** 注意: 若发布新的全量包, appVersion一定要更新 **/
-    appVersion = "1.8"
+    appVersion = "1.9"
 
     def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
     def name = "${project.name}-${variantName}"

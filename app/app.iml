@@ -166,6 +166,8 @@
     <orderEntry type="library" name="Gradle: com.github.lzyzsd:jsbridge:1.0.4@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.zhy:base-rvadapter:3.0.3@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.umeng.umsdk:share-core:6.9.6@aar" level="project" />
+    <orderEntry type="library" name="Gradle: cn.jiguang.sdk:jpush:3.6.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: cn.jiguang.sdk:jcore:2.3.4@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.14@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.tinkerpatch.tinker:tinker-android-lib:1.9.14@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.tinkerpatch.tinker:tinker-android-loader:1.9.14@aar" level="project" />

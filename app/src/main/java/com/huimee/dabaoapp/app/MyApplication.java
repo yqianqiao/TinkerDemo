@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 
@@ -38,8 +39,8 @@ public class MyApplication extends Application {
     private static Context mContext;
     private static Handler mHandler;
     public static String mUserAgent;
-    public static String WX_APP_ID = "wxe40e0dffac7634f8";
-    public static String QQ_APP_ID = "101521879";
+    public static String WX_APP_ID ;
+    public static String QQ_APP_ID ;
     private static long mMainThreadId;
     private List<Activity> mList = new LinkedList<Activity>();
     private HashMap<String, Activity> map = new HashMap<>();
@@ -131,7 +132,19 @@ public class MyApplication extends Application {
         // 选用AUTO页面采集模式
         UMConfigure.setLogEnabled(true);
 
+        //douyin
+//        WX_APP_ID = "wx47956eaf0b3d3e1c";
+//        QQ_APP_ID = "101617720";
+//        mUserAgent = "_android_app_v1.7_hmtlkt";
+//        UMConfigure.init(this, "5ea14d69895cca8948000181", "Umeng_01", UMConfigure.DEVICE_TYPE_PHONE, null);
+//        // 选用AUTO页面采集模式
+//        UMConfigure.setLogEnabled(true);
+
+
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+
+        JPushInterface.setDebugMode(true);// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);
 
         /*--------------- 创建应用里面需要用到的一些共有的属性 ---------------*/
         // 1.上下文
