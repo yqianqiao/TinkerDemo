@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.cecil.okhttp.OkHttpManage;
+
 import butterknife.ButterKnife;
 
 /**
@@ -28,6 +30,7 @@ public abstract class MyBaseActivity extends BaseActivity {
         setContentView(setLayoutId());
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ButterKnife.inject(this);
+
         mContext=this;
         findById();
         init();

@@ -18,7 +18,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -107,7 +106,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -215,6 +213,7 @@ public class DaBaoActivity extends MyBaseActivity {
     @Override
     protected void init() {
         version = getVersion();
+        OkHttpManage.init(this);
         aDate = new Date();
     }
 
@@ -275,6 +274,7 @@ public class DaBaoActivity extends MyBaseActivity {
 
 //        http://j.hbwcl.com/index/game/count?id=84&s=1185&c={uid    86400000
 //        游戏包
+
 //        isOne = sharedPreferences.getBoolean("isOne", false);
 //        if (!Util.checkApkExist(this, "com.huimee.dabaoappplus") && !TextUtils.equals("com.huimee.dabaoappplus", BuildConfig.APPLICATION_ID) && 86400000 < System.currentTimeMillis() - sharedPreferences.getLong("time", System.currentTimeMillis())) {
 //            UpAPK.ResponseBean upapk = new UpAPK.ResponseBean();
@@ -666,7 +666,7 @@ public class DaBaoActivity extends MyBaseActivity {
         mWebView.loadUrl("http://www.sooyooj.com/index.html");
 //        mWebView.loadUrl("http://192.168.0.105:81/index.html");
 //        mWebView.loadUrl("http://192.168.0.188:80/index.html");
-//        mWebView.loadUrl("http://tg.sooyooj.com/?u=1018081");
+//        mWebView.loadUrl("http://tg.sooyooj.com/?u=1038197");
 //
 //        if (TextUtils.isEmpty(sid)) {
 //            mWebView.loadUrl("http://www.sooyooj.com/index.html");
@@ -684,7 +684,6 @@ public class DaBaoActivity extends MyBaseActivity {
 //
 //        }
 
-//
 //        if (num == 1) {
 //            //外网的
 ////            mWebView.loadUrl("http://tg.sooyooj.com/?u=423887");

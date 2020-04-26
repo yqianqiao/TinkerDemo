@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.huimee.dabaoapp.BuildConfig;
@@ -16,7 +15,6 @@ import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.tinker.entry.ApplicationLike;
 import com.tinkerpatch.sdk.TinkerPatch;
 import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
-import com.tinkerpatch.sdk.server.callback.ConfigRequestCallback;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -24,10 +22,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
-import okhttp3.OkHttpClient;
 
 
 /**
@@ -39,8 +35,8 @@ public class MyApplication extends Application {
     private static Context mContext;
     private static Handler mHandler;
     public static String mUserAgent;
-    public static String WX_APP_ID ;
-    public static String QQ_APP_ID ;
+    public static String WX_APP_ID;
+    public static String QQ_APP_ID;
     private static long mMainThreadId;
     private List<Activity> mList = new LinkedList<Activity>();
     private HashMap<String, Activity> map = new HashMap<>();
@@ -118,7 +114,6 @@ public class MyApplication extends Application {
 
         //JPushInterface.setDebugMode(true);//设置开启日志，发布的时候记得关闭
         //JPushInterface.init(this);          //初始化极光推送
-
         mApplication = this;
         SpCache.init(this);//初始化spCache
         initTinkerPatch();
@@ -129,6 +124,8 @@ public class MyApplication extends Application {
         QQ_APP_ID = "101521879";
         mUserAgent = "_android_app_v1.7_syjplus";
         UMConfigure.init(this, "5d47db204ca357d6b5000220", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
+//        MobclickAgent.setCatchUncaughtExceptions(false);
+
         // 选用AUTO页面采集模式
         UMConfigure.setLogEnabled(true);
 
@@ -136,7 +133,7 @@ public class MyApplication extends Application {
 //        WX_APP_ID = "wx47956eaf0b3d3e1c";
 //        QQ_APP_ID = "101617720";
 //        mUserAgent = "_android_app_v1.7_hmtlkt";
-//        UMConfigure.init(this, "5ea14d69895cca8948000181", "Umeng_01", UMConfigure.DEVICE_TYPE_PHONE, null);
+//        UMConfigure.init(this, "5ea504ee570df370f100009f", "Umeng_02", UMConfigure.DEVICE_TYPE_PHONE, null);
 //        // 选用AUTO页面采集模式
 //        UMConfigure.setLogEnabled(true);
 

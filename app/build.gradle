@@ -128,5 +128,5 @@ android {
 }
 
 dependencies {
-
+    implementation files('libs/okhttp.jar')
 }
